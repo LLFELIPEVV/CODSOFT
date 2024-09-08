@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.eggs/
+dist/
+build/
+develop/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test/coverage reports
+*.coverage
+.tox/
+htmlcov/
+cover/
+.pytest_cache/
+
+# Our own share directory (usually contains data files)
+share/
+
+# Directories to ignore
+.git
+.hg
+.svn
+CVS
+_darcs/
+backup/
+tmp/
+*.bak
+*.swp
+*.tmp
+
+# Local configuration
+*.local
+*.swp
+.DS_Store
+
+venv/
+.venv/
