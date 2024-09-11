@@ -15,4 +15,4 @@ def leer_archivo_json():
 
 def actualizar_archivo_json(datos):
     with open('tareas.json', 'w') as archivo:
-        json.dump(datos, archivo, indent=4)
+        json.dump(datos, archivo, indent=4) 

@@ -44,3 +44,5 @@ tmp/
 
 venv/
 .venv/
+
+*.json
