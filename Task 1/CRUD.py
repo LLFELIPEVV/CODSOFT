@@ -26,10 +26,13 @@ def leer_tarea(id):
 
 
 # Actualizar la tarea
-def actualizar_tarea(id, tarea, completada):
+def actualizar_tarea(id, tarea, completada=None):
     datos = leer_archivo_json()
     if id in datos:
-        datos[id] = {"tarea": tarea, "completada": completada}
+        if completada is not None:
+            datos[id] = {"tarea": tarea, "completada": completada}
+        else:
+            datos[id] = {"tarea": tarea, "completada": datos[id]["completada"]}
         try:
             actualizar_archivo_json(datos)
         except Exception as e:
@@ -39,12 +42,9 @@ def actualizar_tarea(id, tarea, completada):
 
 
 # Eliminar la tarea
-def eliminar_tarea(tarea):
+def eliminar_tarea(id):
     try:
         datos = leer_archivo_json()
-        for clave, valor in datos.items():
-            if valor["tarea"] == tarea:
-                id = clave
         del datos[id]
         actualizar_archivo_json(datos)
     except IndexError:

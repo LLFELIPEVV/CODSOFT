@@ -28,7 +28,7 @@ boton_eliminar.grid(row=1, column=1, padx=10, pady=0, sticky="ew")
 
 # Boton para actualizar tareas
 boton_actualizar = tk.Button(
-    ventana, text="Actualizar Tarea", width=20, height=2, bg="Blue", fg="White")
+    ventana, text="Actualizar Tarea", width=20, height=2, bg="Blue", fg="White", command=lambda: actualizar_tarea())
 boton_actualizar.grid(row=1, column=2, padx=50, pady=0, sticky="ew")
 
 # Lista donde se agregarán los frames de tareas
@@ -38,9 +38,11 @@ lista_tareas_frame.grid(row=2, column=0, columnspan=3,
 
 ventana.grid_rowconfigure(2, weight=1)
 
+
+tarea_seleccionada_id = None
+
+
 # Funciones
-
-
 def agregar_tarea():
     tarea = input.get()
     if tarea:
@@ -50,15 +52,21 @@ def agregar_tarea():
 
 
 def eliminar_tarea():
-    tarea = input.get()
-    if tarea:
-        et(tarea)
+    id = tarea_seleccionada_id
+    if tarea_seleccionada_id:
+        et(tarea_seleccionada_id)
         obtener_tareas()
         input.delete(0, tk.END)
 
 
 def actualizar_tarea():
-    pass
+    id = tarea_seleccionada_id
+    if id:
+        nueva_tarea = input.get()
+        if nueva_tarea:
+            at(id, nueva_tarea)
+            obtener_tareas()
+            input.delete(0, tk.END)
 
 
 def obtener_tareas():
@@ -80,8 +88,8 @@ def crear_tarea(id, tarea, completada):
                            font=("Arial", 16), anchor="w")
     label_tarea.pack(side="left", fill="x", expand=True)
 
-    label_tarea.bind("<Button-1>", lambda event,
-                     t=tarea: cargar_tarea_en_input(t))
+    label_tarea.bind(
+        "<Button-1>", lambda event: cargar_tarea_en_input(tarea, id))
     estado_tarea = tk.BooleanVar(value=completada)
 
     checkbox = tk.Checkbutton(tarea_frame, variable=estado_tarea,
@@ -98,9 +106,11 @@ def cambiar_estado_tarea(id, tarea, estado_tarea, tarea_frame):
     at(id, tarea, completada)
 
 
-def cargar_tarea_en_input(tarea):
+def cargar_tarea_en_input(tarea, id):
+    global tarea_seleccionada_id
     input.delete(0, tk.END)
     input.insert(0, tarea)
+    tarea_seleccionada_id = id
 
 
 obtener_tareas()
