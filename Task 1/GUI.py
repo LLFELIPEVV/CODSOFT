@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from modificacion_json import leer_archivo_json
-from CRUD import crear_tarea as ct, actualizar_tarea as at
+from CRUD import crear_tarea as ct, actualizar_tarea as at, eliminar_tarea as et
 
 # Crear la ventana principal
 ventana = tk.Tk()
@@ -23,7 +23,7 @@ boton_agregar.grid(row=1, column=0, padx=50, pady=0, sticky="ew")
 
 # Boton para eliminar tareas
 boton_eliminar = tk.Button(
-    ventana, text="Eliminar Tarea", width=20, height=2, bg="Red", fg="White")
+    ventana, text="Eliminar Tarea", width=20, height=2, bg="Red", fg="White", command=lambda: eliminar_tarea())
 boton_eliminar.grid(row=1, column=1, padx=10, pady=0, sticky="ew")
 
 # Boton para actualizar tareas
@@ -50,7 +50,11 @@ def agregar_tarea():
 
 
 def eliminar_tarea():
-    pass
+    tarea = input.get()
+    if tarea:
+        et(tarea)
+        obtener_tareas()
+        input.delete(0, tk.END)
 
 
 def actualizar_tarea():
@@ -75,12 +79,15 @@ def crear_tarea(id, tarea, completada):
     label_tarea = tk.Label(tarea_frame, text=tarea,
                            font=("Arial", 16), anchor="w")
     label_tarea.pack(side="left", fill="x", expand=True)
-    
+
+    label_tarea.bind("<Button-1>", lambda event,
+                     t=tarea: cargar_tarea_en_input(t))
     estado_tarea = tk.BooleanVar(value=completada)
 
     checkbox = tk.Checkbutton(tarea_frame, variable=estado_tarea,
                               command=lambda: cambiar_estado_tarea(id, tarea, estado_tarea, tarea_frame))
     checkbox.pack(side="right")
+
 
 def cambiar_estado_tarea(id, tarea, estado_tarea, tarea_frame):
     completada = estado_tarea.get()
@@ -89,6 +96,11 @@ def cambiar_estado_tarea(id, tarea, estado_tarea, tarea_frame):
     else:
         tarea_frame.config(bg="white")
     at(id, tarea, completada)
+
+
+def cargar_tarea_en_input(tarea):
+    input.delete(0, tk.END)
+    input.insert(0, tarea)
 
 
 obtener_tareas()

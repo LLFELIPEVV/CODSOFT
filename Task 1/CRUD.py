@@ -39,9 +39,12 @@ def actualizar_tarea(id, tarea, completada):
 
 
 # Eliminar la tarea
-def eliminar_tarea(id):
+def eliminar_tarea(tarea):
     try:
         datos = leer_archivo_json()
+        for clave, valor in datos.items():
+            if valor["tarea"] == tarea:
+                id = clave
         del datos[id]
         actualizar_archivo_json(datos)
     except IndexError:
